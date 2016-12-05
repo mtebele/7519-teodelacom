@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class ProbabillityCounter {
 
-    public void getProbabilityTable(String filename) throws IOException {
+    public HashMap<Integer,Integer> getProbabilityTable(String filename) throws IOException {
 
         FileInputStream in = null;
 
@@ -24,9 +24,7 @@ public class ProbabillityCounter {
                 probTable.put(c, newProb);
             }
 
-            for (int i = -1; i < 256; i++) {
-                System.out.println(i+" - "+probTable.get(i));
-            }
+            return probTable;
 
         } finally {
             if (in != null) {
