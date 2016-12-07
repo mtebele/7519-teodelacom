@@ -16,14 +16,15 @@ public class ProbabillityCounter {
             HashMap<Integer, Integer> probTable = new HashMap<Integer, Integer>();
 
             probTable.put(-1, in.available());
-            for (int i = 0; i < 256; i++) {
-                probTable.put(i, 0);
-            }
 
             int c;
             while ((c = in.read()) != -1) {
-                int newProb = probTable.get(c) + 1;
-                probTable.put(c, newProb);
+                if (!probTable.containsKey(c)) {
+                    probTable.put(c, 1);
+                } else {
+                    int newProb = probTable.get(c) + 1;
+                    probTable.put(c, newProb);
+                }
             }
 
             return probTable;

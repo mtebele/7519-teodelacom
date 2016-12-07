@@ -2,10 +2,9 @@ package com.company;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 
-/**
- * Created by mtebele on 7/12/16.
- */
 public class ShannonUtils {
 
     private static final String TEMP_TABLE_NAME = "temp_table";
@@ -16,21 +15,75 @@ public class ShannonUtils {
 
         int totalCount = probTable.get(-1);
 
-        for (int i = 0; i < probTable.size() - 1; i++) {
-            double probability = (double) probTable.get(i) / totalCount;
-            if (probability > 0) {
+        for (int i = 0; i < 256; i++) {
+            if (probTable.containsKey(i)) {
+                double probability = (double) probTable.get(i) / totalCount;
                 int length = (int) Math.ceil(-log(probability, 2));
                 lengthTable.put(i, length);
-            } else {
-                lengthTable.put(i, 0);
             }
         }
 
         return lengthTable;
     }
 
+    public static HashMap<Integer, String> generateInstantCode(HashMap<Integer,Integer> lengthTable) {
+
+        HashMap<Integer,String> codeTable = new HashMap<Integer,String>();
+
+        HashMap<Integer, LinkedList<String>> subSets = new HashMap<>();
+
+        char binary[] = {'0','1'};
+
+        lengthTable.values().forEach((Integer a) -> {
+            if (!subSets.containsKey(a)) {
+                subSets.put(a, printAllKLength(binary,a));
+            }
+        });
+
+        lengthTable.entrySet()
+                .stream()
+                .sorted((entry1,entry2) -> entry1.getValue().compareTo(entry2.getValue()))
+                .forEach((Map.Entry<Integer,Integer> entry) -> {
+                    String code = subSets.get(entry.getValue()).pop();
+                    codeTable.put(entry.getKey(), code);
+                    subSets.forEach((Integer subkey, LinkedList<String> list) -> {
+                        list.removeIf((String str) -> str.startsWith(code));
+                    });
+                });
+
+        return codeTable;
+
+    }
+
     private static double log(double x, int base) {
         return Math.log(x) / Math.log(base);
+    }
+
+    private static LinkedList<String> printAllKLength(char set[], int k) {
+        int n = set.length;
+        LinkedList<String> list = new LinkedList<>();
+        printAllKLengthRec(set, "", n, k, list);
+        return list;
+    }
+
+    private static void printAllKLengthRec(char set[], String prefix, int n, int k, LinkedList<String> list) {
+
+        // Base case: k is 0, print prefix
+        if (k == 0) {
+            list.add(prefix);
+            return;
+        }
+
+        // One by one add all characters from set and recursively
+        // call for k equals to k-1
+        for (int i = 0; i < n; ++i) {
+
+            // Next character of input added
+            String newPrefix = prefix + set[i];
+
+            // k is decreased, because we have added a new character
+            printAllKLengthRec(set, newPrefix, n, k - 1, list);
+        }
     }
 
     public static void saveTable(HashMap hash) throws IOException {

@@ -11,7 +11,7 @@ public class Main {
         HashMap<Integer, Integer> probTable = probCounter.getProbabilityTable("testFile.txt");
 
         for (int i = -1; i < 256; i++) {
-            if (probTable.get(i) != 0) {
+            if (probTable.containsKey(i)) {
                 System.out.println(i + " - " + probTable.get(i));
             }
         }
@@ -20,8 +20,18 @@ public class Main {
 
         HashMap<Integer, Integer> lengthTable = ShannonUtils.getLengthTable(probTable);
         for (int i = 0; i < 256; i++) {
-            if (lengthTable.get(i) != 0) {
+            if (lengthTable.containsKey(i)) {
                 System.out.println(i + " - " + lengthTable.get(i));
+            }
+        }
+
+        System.out.println("-----CODIGOS-----");
+
+        HashMap<Integer,String> codeTable = ShannonUtils.generateInstantCode(lengthTable);
+
+        for (int i = 0; i < 256; i++) {
+            if (codeTable.containsKey(i)) {
+                System.out.println(i + " - " + codeTable.get(i));
             }
         }
 
