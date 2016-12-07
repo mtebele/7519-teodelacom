@@ -15,7 +15,7 @@ public class ShannonUtils {
         for (int i = 0; i < probTable.size() - 1; i++) {
             double probability = (double) probTable.get(i) / totalCount;
             if (probability > 0) {
-                int length = -log(probability, 2);
+                int length = (int) Math.ceil(-log(probability, 2));
                 lengthTable.put(i, length);
             } else {
                 lengthTable.put(i, 0);
@@ -25,7 +25,7 @@ public class ShannonUtils {
         return lengthTable;
     }
 
-    private static int log(double x, int base) {
-        return (int) (Math.log(x) / Math.log(base));
+    private static double log(double x, int base) {
+        return Math.log(x) / Math.log(base);
     }
 }

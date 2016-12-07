@@ -11,7 +11,9 @@ public class Main {
         HashMap<Integer, Integer> probTable = probCounter.getProbabilityTable("testFile.txt");
 
         for (int i = -1; i < 256; i++) {
-            System.out.println(i + " - " + probTable.get(i));
+            if (probTable.get(i) != 0) {
+                System.out.println(i + " - " + probTable.get(i));
+            }
         }
 
         System.out.println("-----LONGITUDES-----");
