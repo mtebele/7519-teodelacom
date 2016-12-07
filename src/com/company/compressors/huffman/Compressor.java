@@ -27,8 +27,13 @@ public class Compressor {
        Initialize code table
      */
     private void initialize(AbstractMap<Integer,Integer> charFrequencies){
-        codeTable = null;
-        Node tree = this.makeTree(charFrequencies);
+        this.codeTable = new HashMap<>();
+        if(charFrequencies == null || charFrequencies.size() < 1){
+            Node treeRoot = this.makeTree(charFrequencies);
+            if(treeRoot != null){
+                this.buildCodeTable(treeRoot, "");
+            }
+        }
     }
 
     /*
@@ -36,15 +41,8 @@ public class Compressor {
      */
     private Node makeTree(AbstractMap<Integer,Integer> charFrequencies)
     {
-        /*charFrequencies = new HashMap<Integer,Integer>();
-        charFrequencies.put(10,2);
-        charFrequencies.put(255,0);
-        charFrequencies.put(3,0);
-        charFrequencies.put(2,15);
-        charFrequencies.put(0,50);*/
-
         //Using priority queue for merging Nodes
-        PriorityQueue<Node> priorityQueue = new PriorityQueue<Node>(256, new NodeComparator());
+        PriorityQueue<Node> priorityQueue = new PriorityQueue<>(256, new NodeComparator());
         //remove {key: -1} that contains text char count
         charFrequencies.remove(CHARS_FREQUENCY_TOTAL_CHARS_ENTRY_KEY);
 
@@ -73,4 +71,14 @@ public class Compressor {
 
         return priorityQueue.poll();
     }
+
+    private void buildCodeTable(Node node, String charCode){
+        if(!node.isLeaf()){
+            buildCodeTable(node.getLeftNode(), charCode + '0');
+            buildCodeTable(node.getRightNode(), charCode + '1');
+        }else{
+            this.codeTable.put(node.getAsciiCharCode(), charCode);
+        }
+    }
+
 }
