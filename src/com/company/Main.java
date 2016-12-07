@@ -27,7 +27,7 @@ public class Main {
 
         System.out.println("-----CODIGOS-----");
 
-        HashMap<Integer,String> codeTable = ShannonUtils.generateInstantCode(lengthTable);
+        HashMap<Integer, String> codeTable = ShannonUtils.generateInstantCode(lengthTable);
 
         for (int i = 0; i < 256; i++) {
             if (codeTable.containsKey(i)) {

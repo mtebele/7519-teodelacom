@@ -1,6 +1,7 @@
 package com.company;
 
 import java.io.*;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -11,7 +12,7 @@ public class ShannonUtils {
 
     public static HashMap<Integer, Integer> getLengthTable(HashMap<Integer, Integer> probTable) {
 
-        HashMap<Integer, Integer> lengthTable = new HashMap<Integer, Integer>();
+        HashMap<Integer, Integer> lengthTable = new HashMap<>();
 
         int totalCount = probTable.get(-1);
 
@@ -26,24 +27,24 @@ public class ShannonUtils {
         return lengthTable;
     }
 
-    public static HashMap<Integer, String> generateInstantCode(HashMap<Integer,Integer> lengthTable) {
+    public static HashMap<Integer, String> generateInstantCode(HashMap<Integer, Integer> lengthTable) {
 
-        HashMap<Integer,String> codeTable = new HashMap<Integer,String>();
+        HashMap<Integer, String> codeTable = new HashMap<>();
 
         HashMap<Integer, LinkedList<String>> subSets = new HashMap<>();
 
-        char binary[] = {'0','1'};
+        char binary[] = {'0', '1'};
 
         lengthTable.values().forEach((Integer a) -> {
             if (!subSets.containsKey(a)) {
-                subSets.put(a, printAllKLength(binary,a));
+                subSets.put(a, printAllKLength(binary, a));
             }
         });
 
         lengthTable.entrySet()
                 .stream()
-                .sorted((entry1,entry2) -> entry1.getValue().compareTo(entry2.getValue()))
-                .forEach((Map.Entry<Integer,Integer> entry) -> {
+                .sorted(Comparator.comparing(Map.Entry::getValue))
+                .forEach((Map.Entry<Integer, Integer> entry) -> {
                     String code = subSets.get(entry.getValue()).pop();
                     codeTable.put(entry.getKey(), code);
                     subSets.forEach((Integer subkey, LinkedList<String> list) -> {
@@ -52,7 +53,6 @@ public class ShannonUtils {
                 });
 
         return codeTable;
-
     }
 
     private static double log(double x, int base) {
