@@ -16,7 +16,7 @@ public class Main {
 
         System.out.println("-----LONGITUDES-----");
 
-        HashMap<Integer, Integer> lengthTable = probCounter.getLengthTable(probTable);
+        HashMap<Integer, Integer> lengthTable = ShannonUtils.getLengthTable(probTable);
         for (int i = 0; i < 256; i++) {
             if (lengthTable.get(i) != 0) {
                 System.out.println(i + " - " + lengthTable.get(i));
