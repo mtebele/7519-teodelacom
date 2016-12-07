@@ -24,5 +24,20 @@ public class Main {
                 System.out.println(i + " - " + lengthTable.get(i));
             }
         }
+
+        // Ejemplo de guardar / leer un HashMap
+        /*ShannonUtils.saveTable(lengthTable);
+
+        try {
+            HashMap<Integer, Integer> newHash = ShannonUtils.loadTable();
+            System.out.println("-----LONGITUDES LEIDAS-----");
+            for (int i = 0; i < 256; i++) {
+                if (newHash.get(i) != 0) {
+                    System.out.println(i + " - " + newHash.get(i));
+                }
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }*/
     }
 }
