@@ -1,9 +1,7 @@
 package com.company.compressors.huffman;
 
-import java.util.AbstractMap;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.PriorityQueue;
+import java.io.FileInputStream;
+import java.util.*;
 
 /**
  * Created by mati on 05/12/16.
@@ -14,8 +12,6 @@ public class Compressor {
 
     private final int CHARS_FREQUENCY_TOTAL_CHARS_ENTRY_KEY = -1;
     private final int NODE_ROOT_CHAR_VALUE = -2;
-    private final int ASCII_ZERO = -3;
-
 
     private AbstractMap<Integer,String> codeTable;
 
@@ -28,7 +24,7 @@ public class Compressor {
      */
     private void initialize(AbstractMap<Integer,Integer> charFrequencies){
         this.codeTable = new HashMap<>();
-        if(charFrequencies == null || charFrequencies.size() < 1){
+        if(charFrequencies != null && charFrequencies.size() > 1){
             Node treeRoot = this.makeTree(charFrequencies);
             if(treeRoot != null){
                 this.buildCodeTable(treeRoot, "");
@@ -78,6 +74,30 @@ public class Compressor {
             buildCodeTable(node.getRightNode(), charCode + '1');
         }else{
             this.codeTable.put(node.getAsciiCharCode(), charCode);
+        }
+    }
+
+    public BitSet compress(FileInputStream inputStream){
+
+        try{
+            String compressedTextCode = "";
+            int c;
+            while((c = inputStream.read()) != -1){
+                compressedTextCode += this.codeTable.get(c);
+            }
+            System.out.println(compressedTextCode);
+            //convert compressed text code into bit set
+            Integer totalCompressedTextSize = compressedTextCode.length();
+            BitSet compressedCodeBinary = new BitSet(totalCompressedTextSize);
+            for (int i = 0; i < totalCompressedTextSize; i++){
+                if(compressedTextCode.charAt(i) == '1'){
+                    compressedCodeBinary.set(i);
+                }
+            }
+
+            return compressedCodeBinary;
+        }catch (Exception ex){
+            return new BitSet();
         }
     }
 
