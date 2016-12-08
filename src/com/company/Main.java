@@ -10,7 +10,7 @@ public class Main {
         ProbabillityCounter probCounter = new ProbabillityCounter();
         HashMap<Integer, Integer> probTable = probCounter.getProbabilityTable("testFile.txt");
 
-        for (int i = -1; i < 256; i++) {
+        for (int i = -1; i < 257; i++) {
             if (probTable.containsKey(i)) {
                 System.out.println(i + " - " + probTable.get(i));
             }
@@ -29,11 +29,13 @@ public class Main {
 
         HashMap<Integer, String> codeTable = ShannonUtils.generateInstantCode(lengthTable);
 
-        for (int i = 0; i < 256; i++) {
+        for (int i = 0; i < 257; i++) {
             if (codeTable.containsKey(i)) {
                 System.out.println(i + " - " + codeTable.get(i));
             }
         }
+
+        ShannonUtils.translateIntoOutputFile("testFile.txt", codeTable);
 
         // Ejemplo de guardar / leer un HashMap
         /*ShannonUtils.saveTable(lengthTable);

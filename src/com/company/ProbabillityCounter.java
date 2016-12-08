@@ -27,6 +27,9 @@ public class ProbabillityCounter {
                 }
             }
 
+            probTable.put(256, 1);
+            probTable.put(-1, probTable.get(-1)+1);
+
             return probTable;
         } finally {
             if (in != null) {

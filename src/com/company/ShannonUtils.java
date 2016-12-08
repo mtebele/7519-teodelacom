@@ -16,7 +16,7 @@ public class ShannonUtils {
 
         int totalCount = probTable.get(-1);
 
-        for (int i = 0; i < 256; i++) {
+        for (int i = 0; i < 257; i++) {
             if (probTable.containsKey(i)) {
                 double probability = (double) probTable.get(i) / totalCount;
                 int length = (int) Math.ceil(-log(probability, 2));
@@ -53,6 +53,50 @@ public class ShannonUtils {
                 });
 
         return codeTable;
+    }
+
+    public static void translateIntoOutputFile(String filename, HashMap<Integer, String> codeTable) throws IOException {
+
+        FileInputStream in = null;
+        FileOutputStream out = null;
+
+        try {
+            in = new FileInputStream(filename);
+            out = new FileOutputStream("OUT"+filename);
+
+            String buffer = "";
+
+            int c;
+            while ((c = in.read()) != -1) {
+                buffer = buffer + codeTable.get(c);
+
+                while (buffer.length() >= 8) {
+                    String outputByte = buffer.substring(0,8);
+                    out.write(Integer.parseInt(outputByte, 2));
+                    buffer = buffer.substring(8,buffer.length());
+                }
+            }
+
+            buffer = buffer + codeTable.get(256);
+            while (buffer.length() >= 8) {
+                String outputByte = buffer.substring(0,8);
+                out.write(Integer.parseInt(outputByte, 2));
+                buffer = buffer.substring(8,buffer.length());
+            }
+            if(buffer.length() > 0) {
+                while (buffer.length() < 8) {
+                    buffer = buffer + "0";
+                }
+                out.write(Integer.parseInt(buffer, 2));
+            }
+
+        } finally {
+            if (in != null) {
+                in.close();
+                out.close();
+            }
+        }
+
     }
 
     private static double log(double x, int base) {
