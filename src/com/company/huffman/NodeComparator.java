@@ -1,4 +1,4 @@
-package com.company.compressors.huffman;
+package com.company.huffman;
 
 import java.util.Comparator;
 

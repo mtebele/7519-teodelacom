@@ -1,0 +1,149 @@
+package com.company;
+
+import java.io.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+
+public class ShannonUtils {
+
+    private static final String TEMP_TABLE_NAME = "temp_table";
+
+    public static HashMap<Integer, Integer> getLengthTable(HashMap<Integer, Integer> probTable) {
+
+        HashMap<Integer, Integer> lengthTable = new HashMap<>();
+
+        int totalCount = probTable.get(-1);
+
+        for (int i = 0; i < 257; i++) {
+            if (probTable.containsKey(i)) {
+                double probability = (double) probTable.get(i) / totalCount;
+                int length = (int) Math.ceil(-log(probability, 2));
+                lengthTable.put(i, length);
+            }
+        }
+
+        return lengthTable;
+    }
+
+    public static HashMap<Integer, String> generateInstantCode(HashMap<Integer, Integer> lengthTable) {
+
+        HashMap<Integer, String> codeTable = new HashMap<>();
+
+        HashMap<Integer, LinkedList<String>> subSets = new HashMap<>();
+
+        char binary[] = {'0', '1'};
+
+        lengthTable.values().forEach((Integer a) -> {
+            if (!subSets.containsKey(a)) {
+                subSets.put(a, printAllKLength(binary, a));
+            }
+        });
+
+        lengthTable.entrySet()
+                .stream()
+                .sorted(Comparator.comparing(Map.Entry::getValue))
+                .forEach((Map.Entry<Integer, Integer> entry) -> {
+                    String code = subSets.get(entry.getValue()).pop();
+                    codeTable.put(entry.getKey(), code);
+                    subSets.forEach((Integer subkey, LinkedList<String> list) -> {
+                        list.removeIf((String str) -> str.startsWith(code));
+                    });
+                });
+
+        return codeTable;
+    }
+
+    public static void translateIntoOutputFile(String filename, HashMap<Integer, String> codeTable) throws IOException {
+
+        FileInputStream in = null;
+        FileOutputStream out = null;
+
+        try {
+            in = new FileInputStream(filename);
+            out = new FileOutputStream("OUT"+filename);
+
+            String buffer = "";
+
+            int c;
+            while ((c = in.read()) != -1) {
+                buffer = buffer + codeTable.get(c);
+
+                while (buffer.length() >= 8) {
+                    String outputByte = buffer.substring(0,8);
+                    out.write(Integer.parseInt(outputByte, 2));
+                    buffer = buffer.substring(8,buffer.length());
+                }
+            }
+
+            buffer = buffer + codeTable.get(256);
+            while (buffer.length() >= 8) {
+                String outputByte = buffer.substring(0,8);
+                out.write(Integer.parseInt(outputByte, 2));
+                buffer = buffer.substring(8,buffer.length());
+            }
+            if(buffer.length() > 0) {
+                while (buffer.length() < 8) {
+                    buffer = buffer + "0";
+                }
+                out.write(Integer.parseInt(buffer, 2));
+            }
+
+        } finally {
+            if (in != null) {
+                in.close();
+                out.close();
+            }
+        }
+
+    }
+
+    private static double log(double x, int base) {
+        return Math.log(x) / Math.log(base);
+    }
+
+    private static LinkedList<String> printAllKLength(char set[], int k) {
+        int n = set.length;
+        LinkedList<String> list = new LinkedList<>();
+        printAllKLengthRec(set, "", n, k, list);
+        return list;
+    }
+
+    private static void printAllKLengthRec(char set[], String prefix, int n, int k, LinkedList<String> list) {
+
+        // Base case: k is 0, print prefix
+        if (k == 0) {
+            list.add(prefix);
+            return;
+        }
+
+        // One by one add all characters from set and recursively
+        // call for k equals to k-1
+        for (int i = 0; i < n; ++i) {
+
+            // Next character of input added
+            String newPrefix = prefix + set[i];
+
+            // k is decreased, because we have added a new character
+            printAllKLengthRec(set, newPrefix, n, k - 1, list);
+        }
+    }
+
+    public static void saveTable(HashMap hash) throws IOException {
+        File file = new File(TEMP_TABLE_NAME);
+        FileOutputStream f = new FileOutputStream(file);
+        ObjectOutputStream s = new ObjectOutputStream(f);
+        s.writeObject(hash);
+        s.close();
+    }
+
+    public static HashMap loadTable() throws IOException, ClassNotFoundException {
+        File file = new File(TEMP_TABLE_NAME);
+        FileInputStream f = new FileInputStream(file);
+        ObjectInputStream s = new ObjectInputStream(f);
+        HashMap fileObj = (HashMap) s.readObject();
+        s.close();
+        return fileObj;
+    }
+}

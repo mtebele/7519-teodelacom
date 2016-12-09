@@ -1,4 +1,4 @@
-package com.company.compressors.huffman;
+package com.company.huffman;
 
 /**
  * Created by mati on 05/12/16.

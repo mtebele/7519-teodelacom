@@ -1,4 +1,4 @@
-package com.company.compressors.huffman;
+package com.company.huffman;
 
 import java.io.FileInputStream;
 import java.util.*;
@@ -8,14 +8,14 @@ import java.util.*;
  *
  * HuffmanTree and HuffmanCompressor based in http://algs4.cs.princeton.edu/55compression/Huffman.java.html
  */
-public class Compressor {
+public class HuffmanCoder {
 
     private final int CHARS_FREQUENCY_TOTAL_CHARS_ENTRY_KEY = -1;
     private final int NODE_ROOT_CHAR_VALUE = -2;
 
     private AbstractMap<Integer,String> codeTable;
 
-    public Compressor(AbstractMap<Integer,Integer> charFrequencies){
+    public HuffmanCoder(AbstractMap<Integer,Integer> charFrequencies){
         initialize(charFrequencies);
     }
 
@@ -77,7 +77,7 @@ public class Compressor {
         }
     }
 
-    public BitSet compress(FileInputStream inputStream){
+    public BitSet encode(FileInputStream inputStream){
 
         try{
             String compressedTextCode = "";
