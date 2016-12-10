@@ -1,15 +1,15 @@
-package com.company.huffman;
+package com.company;
 
 /**
  * Created by mati on 05/12/16.
  */
-public class Node {
+public class HuffmanTreeNode {
     private Integer asciiCharCode;
     private Integer frequency;
-    private Node rightNode;
-    private Node leftNode;
+    private HuffmanTreeNode rightNode;
+    private HuffmanTreeNode leftNode;
 
-    public Node(Integer asciiCharCode, Integer frequency, Node rightNode, Node leftNode){
+    public HuffmanTreeNode(Integer asciiCharCode, Integer frequency, HuffmanTreeNode rightNode, HuffmanTreeNode leftNode){
         this.asciiCharCode = asciiCharCode;
         this.frequency = frequency;
         this.rightNode = rightNode;
@@ -20,8 +20,8 @@ public class Node {
     public Integer getFrequency(){
         return this.frequency;
     }
-    public Node getRightNode(){return this.rightNode;}
-    public Node getLeftNode(){return this.leftNode;}
+    public HuffmanTreeNode getRightNode(){return this.rightNode;}
+    public HuffmanTreeNode getLeftNode(){return this.leftNode;}
 
     public boolean isLeaf(){
         return (this.rightNode == null && this.leftNode == null);

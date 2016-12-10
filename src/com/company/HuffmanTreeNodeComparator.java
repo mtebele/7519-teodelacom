@@ -1,4 +1,4 @@
-package com.company.huffman;
+package com.company;
 
 import java.util.Comparator;
 
@@ -7,10 +7,10 @@ import java.util.Comparator;
  *
  * Used to compare nodes in PriorityQueue
  */
-public class NodeComparator implements Comparator<Node>{
+public class HuffmanTreeNodeComparator implements Comparator<HuffmanTreeNode>{
 
     @Override
-    public int compare(Node o1, Node o2) {
+    public int compare(HuffmanTreeNode o1, HuffmanTreeNode o2) {
         return o1.getFrequency() - o2.getFrequency();
     }
 }

@@ -1,10 +1,6 @@
 package com.company;
 
-import com.company.huffman.HuffmanCoder;
-
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.BitSet;
 import java.util.HashMap;
 
 public class Main {
@@ -22,16 +18,16 @@ public class Main {
 
         System.out.println("-----LONGITUDES-----");
 
-        HashMap<Integer, Integer> lengthTable = ShannonUtils.getLengthTable(probTable);
+        HashMap<Integer, Integer> lengthTable = CodingUtils.getLengthTable(probTable);
         for (int i = 0; i < 256; i++) {
             if (lengthTable.containsKey(i)) {
                 System.out.println(i + " - " + lengthTable.get(i));
             }
         }
 
-        System.out.println("-----CODIGOS-----");
+        /*System.out.println("-----CODIGOS-----");
 
-        HashMap<Integer, String> codeTable = ShannonUtils.generateInstantCode(lengthTable);
+        HashMap<Integer, String> codeTable = Shannon.generateInstantCode(lengthTable);
 
         for (int i = 0; i < 257; i++) {
             if (codeTable.containsKey(i)) {
@@ -39,13 +35,13 @@ public class Main {
             }
         }
 
-        ShannonUtils.translateIntoOutputFile("testFile.txt", codeTable);
+        CodingUtils.translateIntoOutputFile("testFile.txt", codeTable);
 
         // Ejemplo de guardar / leer un HashMap
-        /*ShannonUtils.saveTable(lengthTable);
+        /*CodingUtils.saveTable(lengthTable);
 
         try {
-            HashMap<Integer, Integer> newHash = ShannonUtils.loadTable();
+            HashMap<Integer, Integer> newHash = CodingUtils.loadTable();
             System.out.println("-----LONGITUDES LEIDAS-----");
             for (int i = 0; i < 256; i++) {
                 if (newHash.get(i) != 0) {
@@ -56,9 +52,8 @@ public class Main {
             e.printStackTrace();
         }*/
 
-        FileInputStream in = null;
-        in = new FileInputStream("testFile.txt");
-        HuffmanCoder huffmanCoder = new HuffmanCoder(probTable);
-        BitSet compressedText = huffmanCoder.encode(in);
+        HashMap<Integer, String> codeTable = Huffman.generateInstantCode(probTable);
+        CodingUtils.translateIntoOutputFile("testFileHuffman.txt", codeTable);
+
     }
 }
