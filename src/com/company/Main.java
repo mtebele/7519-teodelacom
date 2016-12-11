@@ -18,14 +18,14 @@ public class Main {
 
         System.out.println("-----LONGITUDES-----");
 
-        HashMap<Integer, Integer> lengthTable = CodingUtils.getLengthTable(probTable);
+        HashMap<Integer, Integer> lengthTable = Shannon.getLengthTable(probTable);
         for (int i = 0; i < 256; i++) {
             if (lengthTable.containsKey(i)) {
                 System.out.println(i + " - " + lengthTable.get(i));
             }
         }
 
-        /*System.out.println("-----CODIGOS-----");
+        System.out.println("-----CODIGOS-----");
 
         HashMap<Integer, String> codeTable = Shannon.generateInstantCode(lengthTable);
 
@@ -38,22 +38,22 @@ public class Main {
         CodingUtils.translateIntoOutputFile("testFile.txt", codeTable);
 
         // Ejemplo de guardar / leer un HashMap
-        /*CodingUtils.saveTable(lengthTable);
+        CodingUtils.saveTable(lengthTable);
 
         try {
             HashMap<Integer, Integer> newHash = CodingUtils.loadTable();
             System.out.println("-----LONGITUDES LEIDAS-----");
             for (int i = 0; i < 256; i++) {
-                if (newHash.get(i) != 0) {
+                if (newHash.get(i) != null && newHash.get(i) != 0) {
                     System.out.println(i + " - " + newHash.get(i));
                 }
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        }*/
+        }
 
-        HashMap<Integer, String> codeTable = Huffman.generateInstantCode(probTable);
-        CodingUtils.translateIntoOutputFile("testFileHuffman.txt", codeTable);
+        HashMap<Integer, String> codeTable2 = Huffman.generateInstantCode(probTable);
+        CodingUtils.translateIntoOutputFile("testFile.txt", codeTable2);
 
     }
 }
