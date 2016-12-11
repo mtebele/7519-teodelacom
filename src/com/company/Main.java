@@ -10,7 +10,7 @@ public class Main {
         ProbabillityCounter probCounter = new ProbabillityCounter();
         HashMap<Integer, Integer> probTable = probCounter.getProbabilityTable("testFile.txt");
 
-        for (int i = -1; i < 257; i++) {
+        /*for (int i = -1; i < 257; i++) {
             if (probTable.containsKey(i)) {
                 System.out.println(i + " - " + probTable.get(i));
             }
@@ -50,10 +50,11 @@ public class Main {
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        }
+        }*/
 
         HashMap<Integer, String> codeTable2 = Huffman.generateInstantCode(probTable);
         CodingUtils.translateIntoOutputFile("testFile.txt", codeTable2);
 
+        String binaryString = CodingUtils.translateToBinaryString("OUTtestFile.txt");
     }
 }

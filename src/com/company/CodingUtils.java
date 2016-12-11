@@ -15,6 +15,7 @@ public class CodingUtils {
 
         FileInputStream in = null;
         FileOutputStream out = null;
+        String full = "";
 
         try {
             in = new FileInputStream(filename);
@@ -28,6 +29,7 @@ public class CodingUtils {
 
                 while (buffer.length() >= 8) {
                     String outputByte = buffer.substring(0,8);
+                    full += outputByte;
                     out.write(Integer.parseInt(outputByte, 2));
                     buffer = buffer.substring(8,buffer.length());
                 }
@@ -36,6 +38,7 @@ public class CodingUtils {
             buffer = buffer + codeTable.get(256);
             while (buffer.length() >= 8) {
                 String outputByte = buffer.substring(0,8);
+                full += outputByte;
                 out.write(Integer.parseInt(outputByte, 2));
                 buffer = buffer.substring(8,buffer.length());
             }
@@ -43,6 +46,7 @@ public class CodingUtils {
                 while (buffer.length() < 8) {
                     buffer = buffer + "0";
                 }
+                full += buffer;
                 out.write(Integer.parseInt(buffer, 2));
             }
 
@@ -50,6 +54,30 @@ public class CodingUtils {
             if (in != null) {
                 in.close();
                 out.close();
+            }
+        }
+
+    }
+
+    public static String translateToBinaryString(String filename) throws IOException{
+        FileInputStream in = null;
+
+        try {
+            in = new FileInputStream(filename);
+
+            String buffer = "";
+
+            int c;
+            while ((c = in.read()) != -1) {
+                String binaryChar = String.format("%8s", Integer.toBinaryString(c)).replace(' ', '0');
+                buffer = buffer + binaryChar;
+            }
+
+            return buffer;
+
+        } finally {
+            if (in != null) {
+                in.close();
             }
         }
 
