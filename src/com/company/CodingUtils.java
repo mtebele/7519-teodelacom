@@ -11,23 +11,6 @@ public class CodingUtils {
 
     private static final String TEMP_TABLE_NAME = "temp_table";
 
-    public static HashMap<Integer, Integer> getLengthTable(HashMap<Integer, Integer> probTable) {
-
-        HashMap<Integer, Integer> lengthTable = new HashMap<>();
-
-        int totalCount = probTable.get(-1);
-
-        for (int i = 0; i < 257; i++) {
-            if (probTable.containsKey(i)) {
-                double probability = (double) probTable.get(i) / totalCount;
-                int length = (int) Math.ceil(-log(probability, 2));
-                lengthTable.put(i, length);
-            }
-        }
-
-        return lengthTable;
-    }
-
     public static void translateIntoOutputFile(String filename, HashMap<Integer, String> codeTable) throws IOException {
 
         FileInputStream in = null;
@@ -70,10 +53,6 @@ public class CodingUtils {
             }
         }
 
-    }
-
-    private static double log(double x, int base) {
-        return Math.log(x) / Math.log(base);
     }
 
     public static void saveTable(HashMap hash) throws IOException {

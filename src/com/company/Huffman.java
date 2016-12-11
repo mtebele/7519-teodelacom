@@ -33,10 +33,11 @@ public class Huffman {
      */
     private static HuffmanTreeNode makeTree(HashMap<Integer, Integer> charFrequencies)
     {
-        //Using priority queue for merging Nodes
-        PriorityQueue<HuffmanTreeNode> priorityQueue = new PriorityQueue<>(256, new HuffmanTreeNodeComparator());
         //remove {key: -1} that contains text char count
         charFrequencies.remove(CHARS_FREQUENCY_TOTAL_CHARS_ENTRY_KEY);
+
+        //Using priority queue for merging Nodes
+        PriorityQueue<HuffmanTreeNode> priorityQueue = new PriorityQueue<>(charFrequencies.size(), new HuffmanTreeNodeComparator());
 
         //load priority queue with Nodes whose char's frequency is bigger than zero
         Iterator<Integer> it = charFrequencies.keySet().iterator();

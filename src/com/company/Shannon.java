@@ -8,6 +8,23 @@ import java.util.Map;
 
 public class Shannon {
 
+    public static HashMap<Integer, Integer> getLengthTable(HashMap<Integer, Integer> probTable) {
+
+        HashMap<Integer, Integer> lengthTable = new HashMap<>();
+
+        int totalCount = probTable.get(-1);
+
+        for (int i = 0; i < 257; i++) {
+            if (probTable.containsKey(i)) {
+                double probability = (double) probTable.get(i) / totalCount;
+                int length = (int) Math.ceil(-log(probability, 2));
+                lengthTable.put(i, length);
+            }
+        }
+
+        return lengthTable;
+    }
+
    public static HashMap<Integer, String> generateInstantCode(HashMap<Integer, Integer> lengthTable) {
 
         HashMap<Integer, String> codeTable = new HashMap<>();
@@ -34,6 +51,10 @@ public class Shannon {
                 });
 
         return codeTable;
+    }
+
+    private static double log(double x, int base) {
+        return Math.log(x) / Math.log(base);
     }
 
     private static LinkedList<String> printAllKLength(char set[], int k) {
