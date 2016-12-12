@@ -10,6 +10,7 @@ import java.util.LinkedList;
 public class CodingUtils {
 
     private static final String TEMP_TABLE_NAME = "temp_table";
+    private static final String TEMP_TREE_NAME = "temp_tree";
 
     public static void translateIntoOutputFile(String filename, HashMap<Integer, String> codeTable) throws IOException {
 
@@ -98,5 +99,22 @@ public class CodingUtils {
         HashMap fileObj = (HashMap) s.readObject();
         s.close();
         return fileObj;
+    }
+
+    public static void saveHuffmanTree(HuffmanTreeNode treeNode) throws IOException{
+        File file = new File(TEMP_TREE_NAME);
+        FileOutputStream f = new FileOutputStream(file);
+        ObjectOutputStream s = new ObjectOutputStream(f);
+        s.writeObject(treeNode);
+        s.close();
+    }
+
+    public static HuffmanTreeNode loadHuffmanTree() throws IOException, ClassNotFoundException{
+        File file = new File(TEMP_TREE_NAME);
+        FileInputStream f = new FileInputStream(file);
+        ObjectInputStream s = new ObjectInputStream(f);
+        HuffmanTreeNode tree = (HuffmanTreeNode) s.readObject();
+        s.close();
+        return tree;
     }
 }

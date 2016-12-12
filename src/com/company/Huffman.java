@@ -28,8 +28,7 @@ public class Huffman {
 
     public static String decode(String binaryCode, HuffmanTreeNode nodeRoot) {
         StringBuilder decodedTextBuilder = new StringBuilder("");
-        /*int totalChars = probTable.size() - 1; //-1 key should not be taken in count
-        HuffmanTreeNode root = makeTree(probTable);*/
+
         int decodedTextChar = 0;
         int binaryCodeIndex = 0;
         char binaryCodeChar;
@@ -63,21 +62,22 @@ public class Huffman {
     /*
         Creates Huffman Tree with chars frequencies
      */
-    public static HuffmanTreeNode makeTree(HashMap<Integer, Integer> charFrequencies)
+    public static HuffmanTreeNode makeTree(HashMap<Integer, Integer> probTable)
     {
         HuffmanTreeNode treeRoot;
-        if(charFrequencies != null && charFrequencies.size() > 1) {
+        if(probTable != null && probTable.size() > 1) {
+            HashMap<Integer, Integer> probTableLocal =  (HashMap<Integer, Integer>) probTable.clone();
             //remove {key: -1} that contains text char count
-            charFrequencies.remove(CHARS_FREQUENCY_TOTAL_CHARS_ENTRY_KEY);
+            probTableLocal.remove(CHARS_FREQUENCY_TOTAL_CHARS_ENTRY_KEY);
 
             //Using priority queue for merging Nodes
-            PriorityQueue<HuffmanTreeNode> priorityQueue = new PriorityQueue<>(charFrequencies.size(), new HuffmanTreeNodeComparator());
+            PriorityQueue<HuffmanTreeNode> priorityQueue = new PriorityQueue<>(probTableLocal.size(), new HuffmanTreeNodeComparator());
 
             //load priority queue with Nodes whose char's frequency is bigger than zero
-            Iterator<Integer> it = charFrequencies.keySet().iterator();
+            Iterator<Integer> it = probTableLocal.keySet().iterator();
             while(it.hasNext()){
                 Integer currentChar = it.next();
-                Integer frequency = charFrequencies.get(currentChar);
+                Integer frequency = probTableLocal.get(currentChar);
                 if(frequency > 0){
                     priorityQueue.add(new HuffmanTreeNode(currentChar, frequency,null,null));
                 }

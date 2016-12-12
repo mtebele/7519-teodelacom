@@ -1,9 +1,11 @@
 package com.company;
 
+import java.io.Serializable;
+
 /**
  * Created by mati on 05/12/16.
  */
-public class HuffmanTreeNode {
+public class HuffmanTreeNode implements Serializable{
     private Integer asciiCharCode;
     private Integer frequency;
     private HuffmanTreeNode rightNode;

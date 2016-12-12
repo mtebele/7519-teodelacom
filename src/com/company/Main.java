@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException{
 
         ProbabillityCounter probCounter = new ProbabillityCounter();
         HashMap<Integer, Integer> probTable = probCounter.getProbabilityTable("testFileHuffman.txt");
@@ -52,13 +52,15 @@ public class Main {
             e.printStackTrace();
         }*/
 
-        HashMap<Integer,Integer> probTable2 = (HashMap<Integer,Integer>) probTable.clone();
-        HuffmanTreeNode tree = Huffman.makeTree(probTable2);
-        HashMap<Integer, String> codeTable2 = Huffman.generateInstantCode(tree);
-        CodingUtils.translateIntoOutputFile("testFileHuffman.txt", codeTable2);
+        HuffmanTreeNode tree = Huffman.makeTree(probTable);
+        HashMap<Integer, String> codeTable = Huffman.generateInstantCode(tree);
+        CodingUtils.translateIntoOutputFile("testFileHuffman.txt", codeTable);
 
         String binaryCode = CodingUtils.translateToBinaryString("OUTtestFileHuffman.txt");
 
-        String sourceString = Huffman.decode(binaryCode,tree);
+
+        CodingUtils.saveHuffmanTree(tree);
+        HuffmanTreeNode fileTree = CodingUtils.loadHuffmanTree();
+        String sourceString = Huffman.decode(binaryCode,fileTree);
     }
 }
