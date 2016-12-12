@@ -8,13 +8,13 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         ProbabillityCounter probCounter = new ProbabillityCounter();
-        HashMap<Integer, Integer> probTable = probCounter.getProbabilityTable("testFile.txt");
+        HashMap<Integer, Integer> probTable = probCounter.getProbabilityTable("testFileHuffman.txt");
 
-        /*for (int i = -1; i < 257; i++) {
+        for (int i = -1; i < 257; i++) {
             if (probTable.containsKey(i)) {
                 System.out.println(i + " - " + probTable.get(i));
             }
-        }
+        }/*
 
         System.out.println("-----LONGITUDES-----");
 
@@ -52,9 +52,13 @@ public class Main {
             e.printStackTrace();
         }*/
 
-        HashMap<Integer, String> codeTable2 = Huffman.generateInstantCode(probTable);
-        CodingUtils.translateIntoOutputFile("testFile.txt", codeTable2);
+        HashMap<Integer,Integer> probTable2 = (HashMap<Integer,Integer>) probTable.clone();
+        HuffmanTreeNode tree = Huffman.makeTree(probTable2);
+        HashMap<Integer, String> codeTable2 = Huffman.generateInstantCode(tree);
+        CodingUtils.translateIntoOutputFile("testFileHuffman.txt", codeTable2);
 
-        String binaryString = CodingUtils.translateToBinaryString("OUTtestFile.txt");
+        String binaryCode = CodingUtils.translateToBinaryString("OUTtestFileHuffman.txt");
+
+        String sourceString = Huffman.decode(binaryCode,tree);
     }
 }
