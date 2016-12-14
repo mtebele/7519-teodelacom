@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) throws IOException, ClassNotFoundException{
 
         ProbabillityCounter probCounter = new ProbabillityCounter();
-        HashMap<Integer, Integer> probTable = probCounter.getProbabilityTable("testFileHuffman.txt");
+        HashMap<Integer, Integer> probTable = probCounter.getProbabilityTable("testFile.txt");
 
         for (int i = -1; i < 257; i++) {
             if (probTable.containsKey(i)) {
@@ -52,15 +52,12 @@ public class Main {
             e.printStackTrace();
         }*/
 
-        HuffmanTreeNode tree = Huffman.makeTree(probTable);
-        HashMap<Integer, String> codeTable = Huffman.generateInstantCode(tree);
-        CodingUtils.translateIntoOutputFile("testFileHuffman.txt", codeTable);
+        HashMap<Integer, String> codeTable = Huffman.generateInstantCode(probTable);
+        HashMap<String,Integer> binaryToCharTable = CodingUtils.makeBinaryCharTable(codeTable);
 
-        String binaryCode = CodingUtils.translateToBinaryString("OUTtestFileHuffman.txt");
+        //CodingUtils.translateIntoOutputFile("testFileHuffman.txt", codeTable);
+        //String binaryCode = CodingUtils.translateToBinaryString("OUTtestFileHuffman.txt");
 
-
-        CodingUtils.saveHuffmanTree(tree);
-        HuffmanTreeNode fileTree = CodingUtils.loadHuffmanTree();
-        String sourceString = Huffman.decode(binaryCode,fileTree);
+        //String sourceString = Huffman.decode(binaryCode,fileTree);
     }
 }

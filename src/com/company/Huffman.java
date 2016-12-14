@@ -16,9 +16,9 @@ public class Huffman {
     /*
        Initialize code table
      */
-    public static HashMap<Integer, String> generateInstantCode(HuffmanTreeNode treeRoot){
+    public static HashMap<Integer, String> generateInstantCode(HashMap<Integer, Integer> probTable){
+        HuffmanTreeNode treeRoot = makeTree(probTable);
         HashMap<Integer,String> codeTable = new HashMap<>();
-
         if(treeRoot != null){
             buildCodeTable(codeTable, treeRoot, "");
         }
@@ -62,7 +62,7 @@ public class Huffman {
     /*
         Creates Huffman Tree with chars frequencies
      */
-    public static HuffmanTreeNode makeTree(HashMap<Integer, Integer> probTable)
+    private static HuffmanTreeNode makeTree(HashMap<Integer, Integer> probTable)
     {
         HuffmanTreeNode treeRoot;
         if(probTable != null && probTable.size() > 1) {

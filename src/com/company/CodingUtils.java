@@ -3,6 +3,7 @@ package com.company;
 import java.io.*;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 /**
  * Created by mati on 10/12/16.
@@ -84,6 +85,22 @@ public class CodingUtils {
 
     }
 
+    //takes a codeTable and returns a Hashmap with codeTable's values as keys and codeTable's keys as values
+    public static HashMap<String, Integer> makeBinaryCharTable(HashMap<Integer,String> codeTable){
+        HashMap<String,Integer> binaryCharTable = new HashMap<>();
+
+        for (Map.Entry<Integer,String> keyPair :  codeTable.entrySet()){
+            binaryCharTable.put(keyPair.getValue(),keyPair.getKey());
+        }
+
+        return binaryCharTable;
+    }
+
+
+    /*public static String decode(){
+
+    }*/
+
     public static void saveTable(HashMap hash) throws IOException {
         File file = new File(TEMP_TABLE_NAME);
         FileOutputStream f = new FileOutputStream(file);
@@ -101,7 +118,7 @@ public class CodingUtils {
         return fileObj;
     }
 
-    public static void saveHuffmanTree(HuffmanTreeNode treeNode) throws IOException{
+    /*public static void saveHuffmanTree(HuffmanTreeNode treeNode) throws IOException{
         File file = new File(TEMP_TREE_NAME);
         FileOutputStream f = new FileOutputStream(file);
         ObjectOutputStream s = new ObjectOutputStream(f);
@@ -116,5 +133,5 @@ public class CodingUtils {
         HuffmanTreeNode tree = (HuffmanTreeNode) s.readObject();
         s.close();
         return tree;
-    }
+    }*/
 }
