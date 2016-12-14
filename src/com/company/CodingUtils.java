@@ -86,7 +86,7 @@ public class CodingUtils {
     }
 
     //takes a codeTable and returns a Hashmap with codeTable's values as keys and codeTable's keys as values
-    public static HashMap<String, Integer> makeBinaryCharTable(HashMap<Integer,String> codeTable){
+    public static HashMap<String, Integer> generateBinaryCharTable(HashMap<Integer,String> codeTable){
         HashMap<String,Integer> binaryCharTable = new HashMap<>();
 
         for (Map.Entry<Integer,String> keyPair :  codeTable.entrySet()){

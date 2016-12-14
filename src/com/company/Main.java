@@ -53,7 +53,7 @@ public class Main {
         }*/
 
         HashMap<Integer, String> codeTable = Huffman.generateInstantCode(probTable);
-        HashMap<String,Integer> binaryToCharTable = CodingUtils.makeBinaryCharTable(codeTable);
+        HashMap<String,Integer> binaryToCharTable = CodingUtils.generateBinaryCharTable(codeTable);
 
         //CodingUtils.translateIntoOutputFile("testFileHuffman.txt", codeTable);
         //String binaryCode = CodingUtils.translateToBinaryString("OUTtestFileHuffman.txt");
