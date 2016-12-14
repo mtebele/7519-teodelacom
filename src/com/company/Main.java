@@ -52,12 +52,25 @@ public class Main {
             e.printStackTrace();
         }*/
 
+        //HUFFMAN ENCODE
         HashMap<Integer, String> codeTable = Huffman.generateInstantCode(probTable);
-        HashMap<String,Integer> binaryToCharTable = CodingUtils.generateBinaryCharTable(codeTable);
+        CodingUtils.translateIntoOutputFile("testFile.txt", codeTable);
+        CodingUtils.saveTable(codeTable);
 
-        //CodingUtils.translateIntoOutputFile("testFileHuffman.txt", codeTable);
-        //String binaryCode = CodingUtils.translateToBinaryString("OUTtestFileHuffman.txt");
+        //HUFFMAN DECODE
+        HashMap<String, Integer> binaryCharTable = CodingUtils.generateBinaryCharTable(CodingUtils.loadTable());
+        String binaryCode = CodingUtils.translateToBinaryString("OUTtestFile.txt");
+        String sourceString = CodingUtils.decode(binaryCode,binaryCharTable);
 
-        //String sourceString = Huffman.decode(binaryCode,fileTree);
+        //SHANNON ENCODE
+        /*HashMap<Integer, Integer> lengthTable = Shannon.getLengthTable(probTable);
+        HashMap<Integer, String> codeTable = Shannon.generateInstantCode(lengthTable);
+        CodingUtils.translateIntoOutputFile("testFile.txt", codeTable);
+        CodingUtils.saveTable(codeTable);
+
+        //SHANNON DECODE
+        HashMap<String, Integer> binaryCharTable = CodingUtils.generateBinaryCharTable(CodingUtils.loadTable());
+        String binaryCode = CodingUtils.translateToBinaryString("OUTtestFile.txt");
+        String sourceString = CodingUtils.decode(binaryCode,binaryCharTable);*/
     }
 }

@@ -26,39 +26,6 @@ public class Huffman {
         return codeTable;
     }
 
-    public static String decode(String binaryCode, HuffmanTreeNode nodeRoot) {
-        StringBuilder decodedTextBuilder = new StringBuilder("");
-
-        int decodedTextChar = 0;
-        int binaryCodeIndex = 0;
-        char binaryCodeChar;
-        try {
-            //iterate through the binary code until int 256 is found (it's added at the end of the file)
-            while(decodedTextChar != 256){
-                HuffmanTreeNode currentNode = nodeRoot;
-                while(!currentNode.isLeaf()){
-                        binaryCodeChar = binaryCode.charAt(binaryCodeIndex);
-                        if(binaryCodeChar == '1'){
-                            currentNode = currentNode.getRightNode();
-                        }else{
-                            currentNode = currentNode.getLeftNode();
-                        }
-                        binaryCodeIndex++;
-                }
-
-                decodedTextChar = currentNode.getAsciiCharCode();
-                if(decodedTextChar != 256){
-                    decodedTextBuilder.append((char) decodedTextChar);
-                }
-            }
-
-            return decodedTextBuilder.toString();
-        }catch (Exception e){
-            //Error: binaryCodeIndex bigger than binaryCode length
-            return "";
-        }
-    }
-
     /*
         Creates Huffman Tree with chars frequencies
      */

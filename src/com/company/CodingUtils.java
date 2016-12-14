@@ -96,10 +96,28 @@ public class CodingUtils {
         return binaryCharTable;
     }
 
+    //decode the binary text using a binary --> char table
+    public static String decode(String binary, HashMap<String,Integer> binaryToCharTable){
+        StringBuilder decodedTextBuilder = new StringBuilder("");
+        StringBuilder binaryCodeBuilder = new StringBuilder("");
+        Integer currentChar = -1;
+        Integer i = 0;
 
-    /*public static String decode(){
+        while(i < binary.length() && currentChar != 256){
+            binaryCodeBuilder.append(binary.charAt(i));
+            if(binaryToCharTable.containsKey(binaryCodeBuilder.toString())){
+                currentChar = binaryToCharTable.get(binaryCodeBuilder.toString());
+                if(currentChar != 256){
+                    decodedTextBuilder.append((char)currentChar.byteValue());
+                }
+                //reset binary code
+                binaryCodeBuilder = new StringBuilder("");
+            }
+            i++;
+        }
 
-    }*/
+        return decodedTextBuilder.toString();
+    }
 
     public static void saveTable(HashMap hash) throws IOException {
         File file = new File(TEMP_TABLE_NAME);
