@@ -1,8 +1,5 @@
 package com.company;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 
 public class Main {
@@ -78,5 +75,7 @@ public class Main {
         HashMap<String, Integer> binaryCharTable = CodingUtils.generateBinaryCharTable(CodingUtils.loadTable());
         String binaryCode = CodingUtils.translateToBinaryString("OUTtestFile.txt");
         String sourceString = CodingUtils.decode(binaryCode,binaryCharTable);*/
+
+
     }
 }

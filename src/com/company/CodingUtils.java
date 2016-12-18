@@ -1,5 +1,9 @@
 package com.company;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import java.io.*;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -13,10 +17,11 @@ public class CodingUtils {
     private static final String TEMP_TABLE_NAME = "temp_table";
     private static final String TEMP_TREE_NAME = "temp_tree";
 
-    private static final String HAMMING_COMMAND_DIR = "../tcd_Hamming/";
-    private static final String HAMMING_COMMAND_LINUX = "tdc_Hamming.linux.exe";
-    private static final String HAMMING_COMMAND_WIN32 = "tdc_Hamming.win32.exe";
-    private static final String HAMMING_COMMAND_WIN64 = "tdc_Hamming.win64.exe";
+    private static final String HAMMING_CONFIG_FILEPATH = "hamming.conf";
+    private static String HAMMING_COMMAND_DIR = "";
+    private static String HAMMING_COMMAND_LINUX = "";
+    private static String HAMMING_COMMAND_WIN32 = "";
+    private static String HAMMING_COMMAND_WIN64 = "";
 
     public static void translateIntoOutputFile(String filename, HashMap<Integer, String> codeTable) throws IOException {
 
@@ -142,8 +147,19 @@ public class CodingUtils {
     }
 
     //HAMMING
+    private static void loadHammingConf() throws IOException, ParseException{
+        JSONParser parser = new JSONParser();
+        Object obj = parser.parse(new FileReader(HAMMING_CONFIG_FILEPATH));
+
+        JSONObject jsonObject = (JSONObject) obj;
+        HAMMING_COMMAND_DIR = (String) jsonObject.get("cmd_dir");
+        HAMMING_COMMAND_LINUX = (String) jsonObject.get("linux_cmd");
+        HAMMING_COMMAND_WIN32 = (String) jsonObject.get("win32_cmd");
+        HAMMING_COMMAND_WIN64 = (String) jsonObject.get("win64_cmd");
+    }
 
     public static void hammingEncode(String filename) throws Exception {
+        loadHammingConf();
         String hammingCommand = getHammingCommand();
         checkFileExists(filename);
         hammingCommand += " -e " + filename;
@@ -152,6 +168,7 @@ public class CodingUtils {
     }
 
     public static void hammingDecode(String filename) throws Exception{
+        loadHammingConf();
         String hammingCommand = getHammingCommand();
         checkFileExists(filename);
         hammingCommand += " -d " + filename;
