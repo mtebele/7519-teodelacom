@@ -13,6 +13,11 @@ public class CodingUtils {
     private static final String TEMP_TABLE_NAME = "temp_table";
     private static final String TEMP_TREE_NAME = "temp_tree";
 
+    private static final String HAMMING_COMMAND_DIR = "../tcd_Hamming/";
+    private static final String HAMMING_COMMAND_LINUX = "tdc_Hamming.linux.exe";
+    private static final String HAMMING_COMMAND_WIN32 = "tdc_Hamming.win32.exe";
+    private static final String HAMMING_COMMAND_WIN64 = "tdc_Hamming.win64.exe";
+
     public static void translateIntoOutputFile(String filename, HashMap<Integer, String> codeTable) throws IOException {
 
         FileInputStream in = null;
@@ -136,20 +141,44 @@ public class CodingUtils {
         return fileObj;
     }
 
-    /*public static void saveHuffmanTree(HuffmanTreeNode treeNode) throws IOException{
-        File file = new File(TEMP_TREE_NAME);
-        FileOutputStream f = new FileOutputStream(file);
-        ObjectOutputStream s = new ObjectOutputStream(f);
-        s.writeObject(treeNode);
-        s.close();
+    //HAMMING
+
+    public static void hammingEncode(String filename) throws Exception {
+        String hammingCommand = getHammingCommand();
+        checkFileExists(filename);
+        hammingCommand += " -e " + filename;
+        runCommand(hammingCommand);
     }
 
-    public static HuffmanTreeNode loadHuffmanTree() throws IOException, ClassNotFoundException{
-        File file = new File(TEMP_TREE_NAME);
-        FileInputStream f = new FileInputStream(file);
-        ObjectInputStream s = new ObjectInputStream(f);
-        HuffmanTreeNode tree = (HuffmanTreeNode) s.readObject();
-        s.close();
-        return tree;
-    }*/
+    private static String getHammingCommand(){
+        String os = System.getProperty("os.name");
+        String arch =  System.getProperty("os.arch");
+
+        String command = HAMMING_COMMAND_LINUX;
+
+        if(os.matches("(.*)(W|w)indows(.*)")){
+            command = HAMMING_COMMAND_WIN32;
+            if(arch.contains("64")){
+                command = HAMMING_COMMAND_WIN64;
+            }
+        }
+
+        return HAMMING_COMMAND_DIR + command;
+    }
+
+    private static void runCommand(String hammingCommand) throws Exception {
+        Runtime r = Runtime.getRuntime();
+        Process p = r.exec(hammingCommand);
+        p.waitFor();
+        if(p.exitValue() != 0){
+            throw new Exception("Error: Failed Hamming encode!");
+        }
+    }
+
+    private static void checkFileExists(String filePath) throws Exception{
+        File f = new File(filePath);
+        if(!f.exists()) {
+            throw new Exception(filePath + " not found!");
+        }
+    }
 }

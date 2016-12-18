@@ -1,11 +1,13 @@
 package com.company;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException{
+    public static void main(String[] args) throws Exception {
 
         ProbabillityCounter probCounter = new ProbabillityCounter();
         HashMap<Integer, Integer> probTable = probCounter.getProbabilityTable("testFile.txt");
@@ -56,11 +58,12 @@ public class Main {
         HashMap<Integer, String> codeTable = Huffman.generateInstantCode(probTable);
         CodingUtils.translateIntoOutputFile("testFile.txt", codeTable);
         CodingUtils.saveTable(codeTable);
+        CodingUtils.hammingEncode("OUTtestFile.txt");
 
         //HUFFMAN DECODE
-        HashMap<String, Integer> binaryCharTable = CodingUtils.generateBinaryCharTable(CodingUtils.loadTable());
+        /*HashMap<String, Integer> binaryCharTable = CodingUtils.generateBinaryCharTable(CodingUtils.loadTable());
         String binaryCode = CodingUtils.translateToBinaryString("OUTtestFile.txt");
-        String sourceString = CodingUtils.decode(binaryCode,binaryCharTable);
+        String sourceString = CodingUtils.decode(binaryCode,binaryCharTable);*/ 
 
         //SHANNON ENCODE
         /*HashMap<Integer, Integer> lengthTable = Shannon.getLengthTable(probTable);
@@ -72,5 +75,6 @@ public class Main {
         HashMap<String, Integer> binaryCharTable = CodingUtils.generateBinaryCharTable(CodingUtils.loadTable());
         String binaryCode = CodingUtils.translateToBinaryString("OUTtestFile.txt");
         String sourceString = CodingUtils.decode(binaryCode,binaryCharTable);*/
+
     }
 }
