@@ -148,6 +148,15 @@ public class CodingUtils {
         checkFileExists(filename);
         hammingCommand += " -e " + filename;
         runCommand(hammingCommand);
+        renameOutputFiles(filename + ".encoded", filename);
+    }
+
+    public static void hammingDecode(String filename) throws Exception{
+        String hammingCommand = getHammingCommand();
+        checkFileExists(filename);
+        hammingCommand += " -d " + filename;
+        runCommand(hammingCommand);
+        renameOutputFiles(filename + ".decoded", filename);
     }
 
     private static String getHammingCommand(){
@@ -175,10 +184,17 @@ public class CodingUtils {
         }
     }
 
+    private static void renameOutputFiles(String fileName, String newFileName) throws Exception{
+        checkFileExists(fileName);
+        new File(fileName).renameTo(new File(newFileName));
+    }
+
     private static void checkFileExists(String filePath) throws Exception{
         File f = new File(filePath);
         if(!f.exists()) {
             throw new Exception(filePath + " not found!");
         }
     }
+
+
 }

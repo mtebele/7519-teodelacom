@@ -61,20 +61,22 @@ public class Main {
         CodingUtils.hammingEncode("OUTtestFile.txt");
 
         //HUFFMAN DECODE
-        /*HashMap<String, Integer> binaryCharTable = CodingUtils.generateBinaryCharTable(CodingUtils.loadTable());
+        CodingUtils.hammingDecode("OUTtestFile.txt");
+        HashMap<String, Integer> binaryCharTable = CodingUtils.generateBinaryCharTable(CodingUtils.loadTable());
         String binaryCode = CodingUtils.translateToBinaryString("OUTtestFile.txt");
-        String sourceString = CodingUtils.decode(binaryCode,binaryCharTable);*/ 
+        String sourceString = CodingUtils.decode(binaryCode,binaryCharTable);
 
         //SHANNON ENCODE
         /*HashMap<Integer, Integer> lengthTable = Shannon.getLengthTable(probTable);
         HashMap<Integer, String> codeTable = Shannon.generateInstantCode(lengthTable);
         CodingUtils.translateIntoOutputFile("testFile.txt", codeTable);
         CodingUtils.saveTable(codeTable);
+        CodingUtils.hammingEncode("OUTtestFile.txt");
 
         //SHANNON DECODE
+        CodingUtils.hammingDecode("OUTtestFile.txt");
         HashMap<String, Integer> binaryCharTable = CodingUtils.generateBinaryCharTable(CodingUtils.loadTable());
         String binaryCode = CodingUtils.translateToBinaryString("OUTtestFile.txt");
         String sourceString = CodingUtils.decode(binaryCode,binaryCharTable);*/
-
     }
 }
