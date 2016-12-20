@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public class ProbabillityCounter {
 
-    public HashMap<Integer, Integer> getProbabilityTable(String filename) throws IOException {
+    public static HashMap<Integer, Integer> getProbabilityTable(String filename) throws IOException {
 
         FileInputStream in = null;
 
