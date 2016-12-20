@@ -164,7 +164,7 @@ public class CodingUtils {
         checkFileExists(filename);
         hammingCommand += " -e " + filename;
         runCommand(hammingCommand);
-        renameOutputFiles(filename + ".encoded", filename);
+        //renameOutputFiles(filename + ".encoded", filename);
     }
 
     public static void hammingDecode(String filename) throws Exception{
@@ -173,7 +173,7 @@ public class CodingUtils {
         checkFileExists(filename);
         hammingCommand += " -d " + filename;
         runCommand(hammingCommand);
-        renameOutputFiles(filename + ".decoded", filename);
+        //renameOutputFiles(filename + ".decoded", filename);
     }
 
     private static String getHammingCommand(){

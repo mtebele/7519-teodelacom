@@ -1,18 +1,21 @@
 package com.company;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.HashMap;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        System.out.println("Compresor/Detector de Errores/Descompresor\n\n");
+        System.out.println("Compresor\n\n");
         System.out.println("Que desea hacer?\nEscriba COMPRIMIR para comprimir un archivo.\n" +
                 "Escriba ARMAR HAMMING para construir el codigo Hamming de un archivo a transmitir.\n" +
-                "Escriba DETECTAR para detectar errores en un codigo Hamming de un archivo ya transmitido.\n" +
+                "Escriba DECODIFICAR para decodficar el codigo Hamming de un archivo ya transmitido.\n" +
                 "Escriba DESCOMPRIMIR para descomprimir un archivo.\n\n");
 
         boolean end = false;
+        String filename;
         while (!end) {
             String command = System.console().readLine();
             while (command == "") {
@@ -28,17 +31,19 @@ public class Main {
                     }
                     if (comComprimir == "HUFFMAN" || comComprimir == "SHANNON") {
                         System.out.println("Ingrese el nombre del archivo a comprimir: ");
-                        String filename = System.console().readLine();
+                        filename = System.console().readLine();
                         HashMap<Integer,Integer> probTable = ProbabillityCounter.getProbabilityTable(filename);
+                        HashMap<Integer, String> codeTable;
 
                         if (comComprimir == "HUFFMAN") {
-
+                            codeTable = Huffman.generateInstantCode(probTable);
                         } else {
                             HashMap<Integer, Integer> lengthTable = Shannon.getLengthTable(probTable);
-                            HashMap<Integer, String> codeTable = Shannon.generateInstantCode(lengthTable);
-                            CodingUtils.translateIntoOutputFile(filename, codeTable);
-                            CodingUtils.saveTable(codeTable);
+                            codeTable = Shannon.generateInstantCode(lengthTable);
                         }
+
+                        CodingUtils.translateIntoOutputFile(filename, codeTable);
+                        CodingUtils.saveTable(codeTable);
 
                         end = true;
                     } else {
@@ -47,17 +52,32 @@ public class Main {
                     break;
                 case "ARMAR HAMMING":
                     //ACA VAN LOS PASOS PARA ARMAR EL OUTPUT DE HAMMING.
+                    System.out.println("Ingrese el nombre del archivo a ser codificado usando HAMMING: ");
+                    filename = System.console().readLine();
+                    CodingUtils.hammingEncode(filename);
                     break;
-                case "DETECTAR":
+                case "DECODIFICAR":
                     //ACA VAN LOS PASOS PARA RESTAURAR EL ARCHIVO DESDE EL OUTPUT DE HAMMING.
+                    System.out.println("Ingrese el nombre del archivo a ser decodificado: ");
+                    filename = System.console().readLine();
+                    CodingUtils.hammingDecode(filename);
                     break;
                 case "DESCOMPRIMIR":
                     System.out.println("Ingrese el nombre del archivo a descomprimir: ");
-                    String filename = System.console().readLine();
+                    filename = System.console().readLine();
 
                     HashMap<Integer, String> codeTable = CodingUtils.loadTable();
 
                     //ACA VAN LOS PASOS PARA DESCOMPRIMIR
+                    HashMap<String, Integer> binaryCharTable = CodingUtils.generateBinaryCharTable(CodingUtils.loadTable());
+                    String binaryCode = CodingUtils.translateToBinaryString(filename);
+                    String sourceString = CodingUtils.decode(binaryCode,binaryCharTable);
+
+                    //GUARDO DECODEADO A ARCHIVO
+                    BufferedWriter out = new BufferedWriter(new FileWriter("result.txt"));
+                    out.write(sourceString);  //Replace with the string
+                    //you are trying to write
+                    out.close();
 
                     end = true;
 
