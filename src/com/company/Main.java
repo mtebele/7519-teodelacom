@@ -12,14 +12,16 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         System.out.println("Compresor\n\n");
-        System.out.println("Que desea hacer?\nEscriba COMPRIMIR para comprimir un archivo.\n" +
-                "Escriba ARMAR HAMMING para construir el codigo Hamming de un archivo a transmitir.\n" +
-                "Escriba DECODIFICAR para decodficar el codigo Hamming de un archivo ya transmitido.\n" +
-                "Escriba DESCOMPRIMIR para descomprimir un archivo.\n\n");
 
         boolean end = false;
         String filename;
         while (!end) {
+            System.out.println("\nQue desea hacer?\nEscriba COMPRIMIR para comprimir un archivo.\n" +
+                    "Escriba ARMAR HAMMING para construir el codigo Hamming de un archivo a transmitir.\n" +
+                    "Escriba DECODIFICAR para decodficar el codigo Hamming de un archivo ya transmitido.\n" +
+                    "Escriba DESCOMPRIMIR para descomprimir un archivo.\n" +
+                    "Escriba SALIR para salir de la aplicacion.\n\n");
+
             Scanner s = new Scanner(System.in);
             String command = s.nextLine();
             while (command.equals("")) {
@@ -54,9 +56,6 @@ public class Main {
                         CodingUtils.translateIntoOutputFile(filename, codeTable);
                         CodingUtils.saveTable(codeTable);
 
-                        end = true;
-                    } else {
-                        end = false;
                     }
                     break;
                 case "ARMAR HAMMING":
@@ -88,12 +87,13 @@ public class Main {
                     //you are trying to write
                     out.close();
 
+                    break;
+                case "SALIR":
+                    System.out.println("Saliendo...");
                     end = true;
-
                     break;
                 default:
                     System.out.println("COMANDO INVALIDO\n\n");
-                    end = false;
                     break;
             }
         }
