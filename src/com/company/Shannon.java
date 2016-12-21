@@ -1,6 +1,7 @@
 package com.company;
 
-import java.io.*;
+import com.sun.tools.javac.util.Pair;
+
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -8,24 +9,29 @@ import java.util.Map;
 
 public class Shannon {
 
-    public static HashMap<Integer, Integer> getLengthTable(HashMap<Integer, Integer> probTable) {
+    public static Pair<HashMap<Integer, Integer>, Boolean> getLengthTable(HashMap<Integer, Integer> probTable) {
 
         HashMap<Integer, Integer> lengthTable = new HashMap<>();
+        boolean isCompact = true;
 
         int totalCount = probTable.get(-1);
 
         for (int i = 0; i < 257; i++) {
             if (probTable.containsKey(i)) {
                 double probability = (double) probTable.get(i) / totalCount;
-                int length = (int) Math.ceil(-log(probability, 2));
+                double originalLength = -log(probability, 2);
+                if (originalLength % 1 != 0) {
+                    isCompact = false;
+                }
+                int length = (int) Math.ceil(originalLength);
                 lengthTable.put(i, length);
             }
         }
 
-        return lengthTable;
+        return new Pair<>(lengthTable, isCompact);
     }
 
-   public static HashMap<Integer, String> generateInstantCode(HashMap<Integer, Integer> lengthTable) {
+    public static HashMap<Integer, String> generateInstantCode(HashMap<Integer, Integer> lengthTable) {
 
         HashMap<Integer, String> codeTable = new HashMap<>();
 

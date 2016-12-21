@@ -1,5 +1,7 @@
 package com.company;
 
+import com.sun.tools.javac.util.Pair;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.HashMap;
@@ -40,7 +42,12 @@ public class Main {
                         if (comComprimir.equals("HUFFMAN")) {
                             codeTable = Huffman.generateInstantCode(probTable);
                         } else {
-                            HashMap<Integer, Integer> lengthTable = Shannon.getLengthTable(probTable);
+                            Pair<HashMap<Integer, Integer>, Boolean> result = Shannon.getLengthTable(probTable);
+                            HashMap<Integer, Integer> lengthTable = result.fst;
+                            // Chequeo si es compacto
+                            if (result.snd) {
+                                System.out.println("El código es compacto.");
+                            }
                             codeTable = Shannon.generateInstantCode(lengthTable);
                         }
 
