@@ -3,6 +3,7 @@ package com.company;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class Main {
 
@@ -17,25 +18,26 @@ public class Main {
         boolean end = false;
         String filename;
         while (!end) {
-            String command = System.console().readLine();
-            while (command == "") {
-                command = System.console().readLine();
+            Scanner s = new Scanner(System.in);
+            String command = s.nextLine();
+            while (command.equals("")) {
+                command = s.nextLine();
             }
             switch (command) {
                 case "COMPRIMIR":
                     System.out.println("Desea usar HUFFMAN o SHANNON? Escriba el nombre del algoritmo a usar o VOLVER para regresar al menu original:\n");
-                    String comComprimir = System.console().readLine();
-                    while (comComprimir != "HUFFMAN" && comComprimir != "SHANNON" && comComprimir != "VOLVER") {
+                    String comComprimir = s.nextLine();
+                    while (!comComprimir.equals("HUFFMAN") && !comComprimir.equals("SHANNON") && !comComprimir.equals("VOLVER")) {
                         System.out.println("COMANDO INVALIDO\nIngrese el comando nuevamente (HUFFMAN/SHANNON/VOLVER):\n");
-                        comComprimir = System.console().readLine();
+                        comComprimir = s.nextLine();
                     }
-                    if (comComprimir == "HUFFMAN" || comComprimir == "SHANNON") {
+                    if (comComprimir.equals("HUFFMAN") || comComprimir.equals("SHANNON")) {
                         System.out.println("Ingrese el nombre del archivo a comprimir: ");
-                        filename = System.console().readLine();
-                        HashMap<Integer,Integer> probTable = ProbabillityCounter.getProbabilityTable(filename);
+                        filename = s.nextLine();
+                        HashMap<Integer, Integer> probTable = ProbabillityCounter.getProbabilityTable(filename);
                         HashMap<Integer, String> codeTable;
 
-                        if (comComprimir == "HUFFMAN") {
+                        if (comComprimir.equals("HUFFMAN")) {
                             codeTable = Huffman.generateInstantCode(probTable);
                         } else {
                             HashMap<Integer, Integer> lengthTable = Shannon.getLengthTable(probTable);
@@ -53,25 +55,25 @@ public class Main {
                 case "ARMAR HAMMING":
                     //ACA VAN LOS PASOS PARA ARMAR EL OUTPUT DE HAMMING.
                     System.out.println("Ingrese el nombre del archivo a ser codificado usando HAMMING: ");
-                    filename = System.console().readLine();
+                    filename = s.nextLine();
                     CodingUtils.hammingEncode(filename);
                     break;
                 case "DECODIFICAR":
                     //ACA VAN LOS PASOS PARA RESTAURAR EL ARCHIVO DESDE EL OUTPUT DE HAMMING.
                     System.out.println("Ingrese el nombre del archivo a ser decodificado: ");
-                    filename = System.console().readLine();
+                    filename = s.nextLine();
                     CodingUtils.hammingDecode(filename);
                     break;
                 case "DESCOMPRIMIR":
                     System.out.println("Ingrese el nombre del archivo a descomprimir: ");
-                    filename = System.console().readLine();
+                    filename = s.nextLine();
 
                     HashMap<Integer, String> codeTable = CodingUtils.loadTable();
 
                     //ACA VAN LOS PASOS PARA DESCOMPRIMIR
                     HashMap<String, Integer> binaryCharTable = CodingUtils.generateBinaryCharTable(CodingUtils.loadTable());
                     String binaryCode = CodingUtils.translateToBinaryString(filename);
-                    String sourceString = CodingUtils.decode(binaryCode,binaryCharTable);
+                    String sourceString = CodingUtils.decode(binaryCode, binaryCharTable);
 
                     //GUARDO DECODEADO A ARCHIVO
                     BufferedWriter out = new BufferedWriter(new FileWriter("result.txt"));
@@ -159,7 +161,6 @@ public class Main {
         HashMap<String, Integer> binaryCharTable = CodingUtils.generateBinaryCharTable(CodingUtils.loadTable());
         String binaryCode = CodingUtils.translateToBinaryString("OUTtestFile.txt");
         String sourceString = CodingUtils.decode(binaryCode,binaryCharTable);*/
-
 
     }
 }
