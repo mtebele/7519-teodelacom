@@ -1,7 +1,5 @@
 package com.company;
 
-import com.sun.tools.javac.util.Pair;
-
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.HashMap;
@@ -11,7 +9,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        System.out.println("Compresor\n\n");
+        System.out.println("Compresor\n");
 
         boolean end = false;
         String filename;
@@ -20,7 +18,7 @@ public class Main {
                     "Escriba ARMAR HAMMING para construir el codigo Hamming de un archivo a transmitir.\n" +
                     "Escriba DECODIFICAR para decodficar el codigo Hamming de un archivo ya transmitido.\n" +
                     "Escriba DESCOMPRIMIR para descomprimir un archivo.\n" +
-                    "Escriba SALIR para salir de la aplicacion.\n\n");
+                    "Escriba SALIR para salir de la aplicacion.\n");
 
             Scanner s = new Scanner(System.in);
             String command = s.nextLine();
@@ -29,32 +27,46 @@ public class Main {
             }
             switch (command) {
                 case "COMPRIMIR":
-                    System.out.println("Desea usar HUFFMAN o SHANNON? Escriba el nombre del algoritmo a usar o VOLVER para regresar al menu original:\n");
+                    System.out.println("Ingrese el nombre del archivo a comprimir: ");
+                    filename = s.nextLine();
+                    HashMap<Integer, Integer> probTable = ProbabillityCounter.getProbabilityTable(filename);
+                    CodingUtils.logFrequencyTable(probTable);
+
+                    System.out.println("Desea usar HUFFMAN o SHANNON? Escriba el nombre del algoritmo a usar o VOLVER para regresar al menu principal:\n");
                     String comComprimir = s.nextLine();
                     while (!comComprimir.equals("HUFFMAN") && !comComprimir.equals("SHANNON") && !comComprimir.equals("VOLVER")) {
-                        System.out.println("COMANDO INVALIDO\nIngrese el comando nuevamente (HUFFMAN/SHANNON/VOLVER):\n");
+                        System.out.println("COMANDO INVALIDO\nIngrese el comando nuevamente (HUFFMAN/SHANNON/VOLVER): ");
                         comComprimir = s.nextLine();
                     }
                     if (comComprimir.equals("HUFFMAN") || comComprimir.equals("SHANNON")) {
-                        System.out.println("Ingrese el nombre del archivo a comprimir: ");
-                        filename = s.nextLine();
-                        HashMap<Integer, Integer> probTable = ProbabillityCounter.getProbabilityTable(filename);
                         HashMap<Integer, String> codeTable;
 
                         if (comComprimir.equals("HUFFMAN")) {
                             codeTable = Huffman.generateInstantCode(probTable);
+                            CodingUtils.logCodeTable(codeTable);
+                            double huffmanMean = CodingUtils.meanLength(probTable, codeTable);
+                            System.out.println("LONGITUD MEDIA DEL CODIGO OBTENIDO: " + huffmanMean + "\n");
                         } else {
-                            Pair<HashMap<Integer, Integer>, Boolean> result = Shannon.getLengthTable(probTable);
-                            HashMap<Integer, Integer> lengthTable = result.fst;
-                            // Chequeo si es compacto
-                            if (result.snd) {
-                                System.out.println("El código es compacto.");
-                            }
+                            HashMap<Integer, Integer> lengthTable = Shannon.getLengthTable(probTable);
                             codeTable = Shannon.generateInstantCode(lengthTable);
+                            CodingUtils.logCodeTable(codeTable);
+                            // Chequeo si es compacto comparando la longitud media de Shannon con la de Huffman
+                            HashMap<Integer, String> huffmanCodeTable = Huffman.generateInstantCode(probTable);
+                            double shannonMean = CodingUtils.meanLength(probTable, codeTable);
+                            double huffmanMean = CodingUtils.meanLength(probTable, huffmanCodeTable);
+                            System.out.println("LONGITUD MEDIA DEL CODIGO OBTENIDO: " + shannonMean);
+                            System.out.println("LONGITUD MEDIA DE CODIGO HUFFMAN: " + huffmanMean + "\n");
+                            if (shannonMean == huffmanMean) {
+                                System.out.println("El codigo obtenido por Shannon es compacto.\n");
+                            } else {
+                                System.out.println("El codigo obtenido por Shannon no es compacto.\n");
+                            }
+
                         }
 
                         CodingUtils.translateIntoOutputFile(filename, codeTable);
                         CodingUtils.saveTable(codeTable);
+                        System.out.println("Archivo comprimido con exito.\n");
 
                     }
                     break;
@@ -73,6 +85,8 @@ public class Main {
                 case "DESCOMPRIMIR":
                     System.out.println("Ingrese el nombre del archivo a descomprimir: ");
                     filename = s.nextLine();
+                    System.out.println("Ingrese el nombre del archivo resultante: ");
+                    String outFilename = s.nextLine();
 
                     HashMap<Integer, String> codeTable = CodingUtils.loadTable();
 
@@ -82,10 +96,11 @@ public class Main {
                     String sourceString = CodingUtils.decode(binaryCode, binaryCharTable);
 
                     //GUARDO DECODEADO A ARCHIVO
-                    BufferedWriter out = new BufferedWriter(new FileWriter("result.txt"));
+                    BufferedWriter out = new BufferedWriter(new FileWriter(outFilename));
                     out.write(sourceString);  //Replace with the string
                     //you are trying to write
                     out.close();
+                    System.out.println("Archivo descomprimido.\n");
 
                     break;
                 case "SALIR":
@@ -93,7 +108,7 @@ public class Main {
                     end = true;
                     break;
                 default:
-                    System.out.println("COMANDO INVALIDO\n\n");
+                    System.out.println("COMANDO INVALIDO\n");
                     break;
             }
         }

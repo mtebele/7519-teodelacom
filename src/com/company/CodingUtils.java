@@ -6,7 +6,6 @@ import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 
 /**
@@ -22,6 +21,42 @@ public class CodingUtils {
     private static String HAMMING_COMMAND_LINUX = "";
     private static String HAMMING_COMMAND_WIN32 = "";
     private static String HAMMING_COMMAND_WIN64 = "";
+
+    public static double meanLength(HashMap<Integer, Integer> probTable, HashMap<Integer,String> codeTable) {
+
+        double meanLength = 0;
+        double totalCount = (double) probTable.get(-1);
+
+        for (int i = 0; i < 257; i++) {
+            if (probTable.containsKey(i)) {
+                meanLength = meanLength + (((double)probTable.get(i) / totalCount) * (codeTable.get(i).length()));
+            }
+        }
+
+        return meanLength;
+    }
+
+    public static void logFrequencyTable(HashMap table) {
+
+        System.out.println("PROBABILIDAD DE CADA SIMBOLO.\n");
+        for (int i = 0; i < 256; i++) {
+            if (table.containsKey(i)) {
+                System.out.println(i + " - " + table.get(i) + "/" + table.get(-1));
+            }
+        }
+        System.out.println("EOF - "+ table.get(256) + "/" + table.get(-1) + "\n");
+    }
+
+    public static void logCodeTable(HashMap codeTable) {
+
+        System.out.println("CODIGOS DE CADA SIMBOLO.\n");
+        for (int i = 0; i < 256; i++) {
+            if (codeTable.containsKey(i)) {
+                System.out.println(i + " - " + codeTable.get(i));
+            }
+        }
+        System.out.println("EOF - " + codeTable.get(256) + "\n");
+    }
 
     public static void translateIntoOutputFile(String filename, HashMap<Integer, String> codeTable) throws IOException {
 
