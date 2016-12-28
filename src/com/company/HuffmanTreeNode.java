@@ -8,14 +8,16 @@ import java.io.Serializable;
 public class HuffmanTreeNode implements Serializable{
     private Integer asciiCharCode;
     private Integer frequency;
+    private Integer order;
     private HuffmanTreeNode rightNode;
     private HuffmanTreeNode leftNode;
 
-    public HuffmanTreeNode(Integer asciiCharCode, Integer frequency, HuffmanTreeNode rightNode, HuffmanTreeNode leftNode){
+    public HuffmanTreeNode(Integer asciiCharCode, Integer frequency, Integer order, HuffmanTreeNode rightNode, HuffmanTreeNode leftNode){
         this.asciiCharCode = asciiCharCode;
         this.frequency = frequency;
         this.rightNode = rightNode;
         this.leftNode = leftNode;
+        this.order = order;
     }
 
     public Integer getAsciiCharCode() {return this.asciiCharCode;}
@@ -24,6 +26,7 @@ public class HuffmanTreeNode implements Serializable{
     }
     public HuffmanTreeNode getRightNode(){return this.rightNode;}
     public HuffmanTreeNode getLeftNode(){return this.leftNode;}
+    public Integer getOrder() {return this.order;}
 
     public boolean isLeaf(){
         return (this.rightNode == null && this.leftNode == null);

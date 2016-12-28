@@ -42,24 +42,29 @@ public class Huffman {
 
             //load priority queue with Nodes whose char's frequency is bigger than zero
             Iterator<Integer> it = probTableLocal.keySet().iterator();
+
+            Integer nodeOrder = 1;
             while(it.hasNext()){
                 Integer currentChar = it.next();
                 Integer frequency = probTableLocal.get(currentChar);
                 if(frequency > 0){
-                    priorityQueue.add(new HuffmanTreeNode(currentChar, frequency,null,null));
+                    priorityQueue.add(new HuffmanTreeNode(currentChar, frequency, nodeOrder,null,null));
                 }
+                nodeOrder++;
             }
 
             //if only one caracter then add another extra node with root value and frequency zero
             if(priorityQueue.size() == 1){
-                priorityQueue.add(new HuffmanTreeNode(NODE_PARENT_CHAR_VALUE,0,null,null));
+                priorityQueue.add(new HuffmanTreeNode(NODE_PARENT_CHAR_VALUE,0,nodeOrder,null,null));
+                nodeOrder++;
             }
 
             //build tree
             while(priorityQueue.size() > 1){
                 HuffmanTreeNode right = priorityQueue.poll();
                 HuffmanTreeNode left = priorityQueue.poll();
-                HuffmanTreeNode parent = new HuffmanTreeNode(NODE_PARENT_CHAR_VALUE, right.getFrequency() + left.getFrequency(),left,right);
+                HuffmanTreeNode parent = new HuffmanTreeNode(NODE_PARENT_CHAR_VALUE, right.getFrequency() + left.getFrequency(),nodeOrder,left,right);
+                nodeOrder++;
                 priorityQueue.add(parent);
             }
 

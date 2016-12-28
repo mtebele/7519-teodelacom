@@ -11,6 +11,10 @@ public class HuffmanTreeNodeComparator implements Comparator<HuffmanTreeNode>{
 
     @Override
     public int compare(HuffmanTreeNode o1, HuffmanTreeNode o2) {
+        if(o1.getFrequency() == o2.getFrequency()){
+            return - (o1.getOrder() - o2.getOrder());
+        }
+
         return o1.getFrequency() - o2.getFrequency();
     }
 }
